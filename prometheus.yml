@@ -1,0 +1,68 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'bigdata-image-processor'
+
+scrape_configs:
+  # Web servers
+  - job_name: 'web-servers'
+    static_configs:
+      - targets:
+          - 'web-1:3000'
+          - 'web-2:3000'
+        labels:
+          group: 'web'
+
+  # Worker nodes
+  - job_name: 'workers'
+    static_configs:
+      - targets:
+          - 'worker-1:3000'
+          - 'worker-2:3000'
+          - 'worker-3:3000'
+          - 'worker-4:3000'
+        labels:
+          group: 'workers'
+
+  # Redis metrics (requires redis_exporter)
+  - job_name: 'redis'
+    static_configs:
+      - targets:
+          - 'redis:6379'
+        labels:
+          service: 'redis'
+
+  # MinIO metrics
+  - job_name: 'minio'
+    metrics_path: /minio/v2/metrics/cluster
+    scheme: http
+    static_configs:
+      - targets:
+          - 'minio:9000'
+        labels:
+          service: 'minio'
+
+  # PostgreSQL metrics (requires postgres_exporter)
+  - job_name: 'postgres'
+    static_configs:
+      - targets:
+          - 'postgres:5432'
+        labels:
+          service: 'postgres'
+
+  # Nginx metrics (requires nginx-prometheus-exporter)
+  - job_name: 'nginx'
+    static_configs:
+      - targets:
+          - 'nginx:9113'
+        labels:
+          service: 'nginx'
+
+  # Node exporter for system metrics
+  - job_name: 'node'
+    static_configs:
+      - targets:
+          - 'localhost:9100'
+        labels:
+          service: 'node'

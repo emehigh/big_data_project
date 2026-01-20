@@ -1,0 +1,7 @@
+{
+  "model": "llava:latest",
+  "prompt": "Describe this image in detail.",
+  "images": [
+    "C:\\Users\\Mihai\\Desktop\\big\\poza.jpg"
+  ]
+}
